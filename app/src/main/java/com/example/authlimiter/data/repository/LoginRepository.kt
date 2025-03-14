@@ -8,6 +8,7 @@ import javax.inject.Inject
 class LoginRepository @Inject constructor(
     private val apiService: ApiService
 ) {
-    suspend fun checkRateLimit(request: RateLimitRequest) = apiService.checkRateLimit(request)
+    suspend fun checkRateLimit(clientID: String, request: RateLimitRequest) =
+        apiService.checkRateLimit(clientID, request)
     suspend fun authenticate(request: LoginRequest) = apiService.authenticate(request)
 }

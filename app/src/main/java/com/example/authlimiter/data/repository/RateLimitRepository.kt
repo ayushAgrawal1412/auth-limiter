@@ -6,13 +6,16 @@ import com.example.authlimiter.data.network.ApiService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
+import javax.inject.Inject
 
-class RateLimitRepository(private val apiService: ApiService) {
+class RateLimitRepository @Inject constructor(
+    private val apiService: ApiService
+) {
 
-    suspend fun checkRateLimit(request: RateLimitRequest): RateLimitResponse? {
+    suspend fun checkRateLimit(clientID: String, request: RateLimitRequest): RateLimitResponse? {
         return withContext(Dispatchers.IO) {
             try {
-                apiService.checkRateLimit(request)
+                apiService.checkRateLimit(clientID, request)
             } catch (e: HttpException) {
                 null
             }

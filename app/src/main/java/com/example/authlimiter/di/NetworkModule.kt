@@ -1,6 +1,7 @@
 package com.example.authlimiter.di
 
 import com.example.authlimiter.data.network.ApiService
+import com.example.authlimiter.data.repository.RateLimitRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,7 +34,7 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://51.21.239.22:8080/") // Keep your EC2 IP and port
+            .baseUrl("http://13.49.80.120:8080/") // Keep your EC2 IP and port
             .client(okHttpClient) // Use OkHttpClient here
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -43,5 +44,11 @@ object NetworkModule {
     @Singleton
     fun provideApiService(retrofit: Retrofit): ApiService {
         return retrofit.create(ApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRateLimitRepository(apiService: ApiService): RateLimitRepository {
+        return RateLimitRepository(apiService)
     }
 }
