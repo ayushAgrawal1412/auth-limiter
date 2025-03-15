@@ -1,7 +1,7 @@
 package com.example.authlimiter.di
 
 import com.example.authlimiter.data.network.ApiService
-import com.example.authlimiter.data.repository.RateLimitRepository
+import com.example.authlimiter.data.repository.AuthRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -10,6 +10,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import javax.inject.Singleton
 import kotlin.jvm.java
 
@@ -17,8 +18,6 @@ import kotlin.jvm.java
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    @Provides
-    @Singleton
     fun provideOkHttpClient(): OkHttpClient {
         val loggingInterceptor = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
@@ -34,9 +33,9 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("http://13.49.80.120:8080/") // Keep your EC2 IP and port
-            .client(okHttpClient) // Use OkHttpClient here
-            .addConverterFactory(GsonConverterFactory.create())
+            .baseUrl("http://10.0.2.2:8081/")
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create()) // Keep only GsonConverterFactory
             .build()
     }
 
@@ -48,7 +47,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideRateLimitRepository(apiService: ApiService): RateLimitRepository {
-        return RateLimitRepository(apiService)
+    fun provideAuthRepository(apiService: ApiService): AuthRepository {
+        return AuthRepository(apiService)
     }
 }

@@ -75,4 +75,6 @@ dependencies {
 // OkHttp for logging
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging)
+
+    implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
 }

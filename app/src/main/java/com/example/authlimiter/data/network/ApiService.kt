@@ -1,21 +1,16 @@
 package com.example.authlimiter.data.network
 
-import com.example.authlimiter.data.model.LoginRequest
-import com.example.authlimiter.data.model.LoginResponse
-import com.example.authlimiter.data.model.RateLimitRequest
-import com.example.authlimiter.data.model.RateLimitResponse
+import com.example.authlimiter.data.model.AuthRequest
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
-import retrofit2.http.Query
 
 interface ApiService {
 
-    @POST("/api/request")
-    suspend fun checkRateLimit(
-        @Query("clientID") clientID: String,
-        @Body request: RateLimitRequest
-    ): RateLimitResponse
+    @POST("auth/signup")
+    suspend fun signup(@Body request: AuthRequest): Response<String>
 
-    @POST("authenticate")
-    suspend fun authenticate(@Body request: LoginRequest): LoginResponse
+    @POST("auth/login")
+    suspend fun login(@Body request: AuthRequest): Response<String>
+
 }
