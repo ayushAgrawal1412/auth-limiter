@@ -18,6 +18,8 @@ import kotlin.jvm.java
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
+    @Provides
+    @Singleton
     fun provideOkHttpClient(): OkHttpClient {
         val loggingInterceptor = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
@@ -25,7 +27,7 @@ object NetworkModule {
 
         return OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
-            .hostnameVerifier { _, _ -> true } // Allows any SSL certificate (for testing purposes)
+            .hostnameVerifier { _, _ -> true }
             .build()
     }
 
